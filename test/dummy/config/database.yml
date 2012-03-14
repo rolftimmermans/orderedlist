@@ -1,0 +1,17 @@
+pg: &pg
+  adapter: postgresql
+  min_messages: WARNING
+  database: test
+
+mysql: &mysql
+  adapter: mysql2
+  database: test
+
+sqlite: &sqlite
+  adapter: sqlite3
+  timeout: 100
+  database: tmp/test.sqlite3
+
+test:
+  pool: 20
+  <<: *<%= $adapter %>
