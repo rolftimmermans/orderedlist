@@ -4,6 +4,10 @@ Bundler.require :default, :test, :pg, :sqlite, :mysql
 
 $adapter = ENV["DB"] || "pg"
 
+SimpleCov.start do
+  add_filter File.expand_path("..", __FILE__)
+end
+
 Combustion.path = "test/dummy"
 Combustion.initialize! :active_record
 
