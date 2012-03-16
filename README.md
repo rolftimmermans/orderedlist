@@ -12,13 +12,13 @@ production use yet.
 
 In your Gemfile:
 
-  gem "orderedlist"
+    gem "orderedlist"
 
 In your model:
 
-  class Foo < ActiveRecord::Base
-    acts_as_ordered_list
-  end
+    class Foo < ActiveRecord::Base
+      acts_as_ordered_list
+    end
 
 ## Contributing
 
