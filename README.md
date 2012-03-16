@@ -28,6 +28,13 @@ In your model:
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## Other projects
+
+https://github.com/harvesthq/ranked-model
+https://github.com/shuber/sortable
+https://github.com/codegram/resort
+https://github.com/12spokes/acts_as_restful_list
+
 ## Copyright
 
 Ordered List is copyright (c) 2012 Rolf Timmermans

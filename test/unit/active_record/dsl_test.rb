@@ -3,25 +3,25 @@ require File.expand_path("../../../test_helper", __FILE__)
 describe "dsl" do
   describe "act as" do
     it "should include module" do
-      assert_kind_of OrderedList::ActiveRecord::Orderable, model.new
+      assert_kind_of OrderedList::ActiveRecord::Reorderable, list_model.new
     end
 
     it "should set position column option" do
-      klass = Class.new(ActiveRecord::Base) do
+      klass = empty_model do
         acts_as_ordered_list column: "some_column"
       end
       assert_equal "some_column", klass.position_column
     end
 
     it "should set list scope" do
-      klass = Class.new(ActiveRecord::Base) do
+      klass = empty_model do
         acts_as_ordered_list scope: ["user_id", "active"]
       end
       assert_equal ["user_id", "active"], klass.list_scope_columns
     end
 
     it "should wrap list scope in array" do
-      klass = Class.new(ActiveRecord::Base) do
+      klass = empty_model do
         acts_as_ordered_list scope: :user_id
       end
       assert_equal [:user_id], klass.list_scope_columns
@@ -29,7 +29,7 @@ describe "dsl" do
 
     it "should complain when passing invalid options" do
       assert_raises ArgumentError do
-        klass = Class.new(ActiveRecord::Base) do
+        klass = empty_model do
           acts_as_ordered_list position: "foo"
         end
       end
@@ -38,7 +38,7 @@ describe "dsl" do
 
   describe "scope columns" do
     it "should be inherited by child models" do
-      parent = model do
+      parent = list_model do
         self.list_scope_columns = [:foo, :bar]
       end
       child = Class.new(parent)
@@ -47,7 +47,7 @@ describe "dsl" do
 
     describe "when overridden" do
       before do
-        @parent = model do
+        @parent = list_model do
           self.list_scope_columns = [:foo, :bar]
         end
         @child = Class.new(@parent) do

@@ -1,6 +1,8 @@
-require "ordered_list/active_record/dsl"
-require "ordered_list/active_record/list_relation"
+# require "ordered_list/active_record/balancing"
 require "ordered_list/active_record/orderable"
+require "ordered_list/active_record/reorderable"
+require "ordered_list/active_record/list"
+require "ordered_list/active_record/dsl"
 
 module OrderedList
   module ActiveRecord

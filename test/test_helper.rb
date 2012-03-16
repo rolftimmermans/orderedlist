@@ -1,11 +1,14 @@
 require "bundler"
 
-Bundler.require :default, :test, :pg, :sqlite, :mysql
-
 $adapter = ENV["DB"] || "pg"
+
+# TODO: Use something like appraisal to test multiple dependency versions.
+Bundler.require :default, :test, $adapter.to_sym
 
 SimpleCov.start do
   add_filter File.expand_path("..", __FILE__)
+  add_group "Position", "lib/ordered_list/position"
+  add_group "Active Record", "lib/ordered_list/active_record"
 end
 
 Combustion.path = "test/dummy"
@@ -13,28 +16,9 @@ Combustion.initialize! :active_record
 
 DatabaseCleaner.strategy = $adapter == "mysql" ? :truncation : :deletion
 
-# TODO: Use something like appraisal to test multiple dependency versions.
-
 require "minitest/autorun"
 
-class ConnectionDouble < ActiveRecord::ConnectionAdapters::AbstractAdapter
-  attr_reader :last_query, :last_binds
-
-  def initialize(*)
-    super(nil)
-    @visitor = Arel::Visitors::PostgreSQL.new self
-  end
-
-  def select_all(arel, *, binds)
-    @last_query = arel
-    @last_binds = Hash[binds.map { |k, v| [k.name, v] }]
-    @returns || []
-  end
-
-  def returning(*returns)
-    @returns = returns
-  end
-end
+require File.expand_path("../connection_double", __FILE__)
 
 class MiniTest::Unit::TestCase
   class << self
@@ -47,27 +31,39 @@ class MiniTest::Unit::TestCase
     Position.parse(s)
   end
 
+  def sql(arel)
+    if Array === arel
+      arel.map { |a| sql(a) }.join
+    else
+      connection.visitor.accept(arel)
+    end
+  end
+
   def connection
     $connection = (@connection ||= ConnectionDouble.new)
   end
 
-  def model
+  def empty_model
     connection
-    @model ||= Class.new(ActiveRecord::Base) do
-      self.table_name = "rows"
-      attr_accessible :id, :position
-
-      acts_as_ordered_list
-
+    Class.new(ActiveRecord::Base) do
       class << self
         def connection
           $connection
         end
       end
+      self.table_name = "rows"
+      attr_protected
+      instance_eval(&Proc.new) if block_given?
+    end
+  end
 
+  def list_model
+    @list_model ||= empty_model do
+      acts_as_ordered_list
       instance_eval(&Proc.new) if block_given?
     end
   end
 end
 
+# Avoid typing the main gem namespace all the time.
 include OrderedList

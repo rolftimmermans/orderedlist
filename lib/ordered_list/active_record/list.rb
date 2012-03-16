@@ -1,14 +1,6 @@
 module OrderedList
   module ActiveRecord
-    module ListRelation
-      def ordered
-        order(table[klass.position_column].asc)
-      end
-
-      def reversed
-        ordered.reverse_order
-      end
-
+    module List
       # Returns all records before the given position, record or id.
       def before(record_or_position)
         where(table[klass.position_column].lt(position_of(record_or_position).to_s))

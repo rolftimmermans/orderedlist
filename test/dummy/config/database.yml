@@ -7,6 +7,11 @@ mysql: &mysql
   adapter: mysql2
   database: test
 
+mssql: &mssql
+  adapter: sqlserver
+  database: test
+  host: sqlserver
+
 sqlite: &sqlite
   adapter: sqlite3
   timeout: 100

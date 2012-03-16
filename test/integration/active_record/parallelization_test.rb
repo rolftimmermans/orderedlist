@@ -39,7 +39,7 @@ describe "parallelized" do
 
     describe "appends" do
       it "should avoid race conditions" do
-        n = 10
+        n = 20
         root = Item.create
         items = parallel(n.times) do
           begin

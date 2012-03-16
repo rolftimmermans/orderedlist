@@ -2,12 +2,14 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
 
+ADAPTERS = %w[pg mysql mssql sqlite]
+
 namespace :test do
   desc "Run unit tests, and integration test against all databases"
   task :all do
     puts "Unit tests"
     Rake::Task["test:units"].invoke
-    %w[pg mysql sqlite].each do |db|
+    ADAPTERS.each do |db|
       ENV["DB"] = db
       puts
       puts "Integration tests for DB=#{db}"

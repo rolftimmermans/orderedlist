@@ -1,33 +1,43 @@
 require File.expand_path("../../../test_helper", __FILE__)
 
 describe "orderable" do
-  describe "constructor" do
-    it "should store string representation in position attribute" do
-      assert_equal "101101", model.new(position: pos("101101")).read_attribute(:position)
-    end
-  end
-
-  describe "position" do
-    it "should return position object" do
-      assert_equal pos("101101"), model.new(position: "101101").position
-    end
-
-    it "should return nil for missing position" do
-      assert_equal nil, model.new.position
-    end
-  end
-
   describe "list" do
-    it "should generate relation with bound variables" do
-      model do
-        self.list_scope_columns = [:active, :user_id]
-      end
-      assert_equal %Q[WHERE "rows"."active" = ? AND "rows"."user_id" = ?], model.new.list.where_sql
+    it "should include list module" do
+      assert_kind_of OrderedList::ActiveRecord::List, list_model.list
     end
 
-    it "should generate relation with scope conditions" do
-      assert_equal model.list_scope_columns,
-        model.new.list.where_values.map { |condition| condition.left.name.to_sym }
+    it "should include balancing module" do
+      assert_kind_of OrderedList::ActiveRecord::Balancing, list_model.list
+    end
+  end
+
+  describe "ordered" do
+    it "should sort by default position column" do
+      assert_equal %Q["rows"."position" ASC],
+        sql(list_model.ordered.arel.orders)
+    end
+
+    it "should sort by custom position column" do
+      list_model do
+        self.position_column = "special_pos"
+      end
+      assert_equal %Q["rows"."special_pos" ASC],
+        sql(list_model.ordered.arel.orders)
+    end
+  end
+
+  describe "reversed" do
+    it "should reverse sort by default position column" do
+      assert_equal %Q["rows"."position" DESC],
+        sql(list_model.reversed.arel.orders)
+    end
+
+    it "should reverse sort by custom position column" do
+      list_model do
+        self.position_column = "special_pos"
+      end
+      assert_equal %Q["rows"."special_pos" DESC],
+        sql(list_model.reversed.arel.orders)
     end
   end
 end

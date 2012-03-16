@@ -11,12 +11,17 @@ group :pg do
   gem "pg"
 end
 
-group :sqlite do
-  gem "sqlite3"
-end
-
 group :mysql do
   gem "mysql2"
+end
+
+group :mssql do
+  gem "tiny_tds"  # Requires freetds library.
+  gem "activerecord-sqlserver-adapter"
+end
+
+group :sqlite do
+  gem "sqlite3"
 end
 
 gemspec
