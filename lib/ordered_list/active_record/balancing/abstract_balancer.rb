@@ -14,7 +14,7 @@ module OrderedList
           connection.update(balancing_query, "Balance")
         end
 
-        private
+        protected
 
         def balancing_query
           raise NotImplementedError

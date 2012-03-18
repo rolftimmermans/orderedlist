@@ -34,6 +34,10 @@ class MiniTest::Unit::TestCase
   def hexpos(hex)
     Position.new([hex].pack("H*"))
   end
+  
+  def inline_sql(str)
+    str.gsub(/^\s+/, "").gsub("\n", " ").strip
+  end
 
   def sql(arel)
     if Array === arel

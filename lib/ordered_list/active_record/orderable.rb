@@ -4,7 +4,7 @@ module OrderedList
       # TODO: This should not be used with scoped lists, but it's very useful
       # for lists that span the entire table.
       def list
-        ordered.extending(List) #, Balancing)
+        ordered.extending(List, Balancing)
       end
 
       def ordered

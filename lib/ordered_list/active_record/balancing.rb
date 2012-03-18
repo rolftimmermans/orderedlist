@@ -21,7 +21,7 @@ module OrderedList
         when "sqlserver"
           SQLServerBalancer
         else
-          raise NotImplementedError, "Balancing is not implemented for #{connection.adapter_name}."
+          raise NotImplementedError, "Balancing is not implemented for #{connection.adapter_name}"
         end
       end
     end

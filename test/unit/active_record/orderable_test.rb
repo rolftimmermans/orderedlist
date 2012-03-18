@@ -6,9 +6,9 @@ describe "orderable" do
       assert_kind_of OrderedList::ActiveRecord::List, list_model.list
     end
 
-    # it "should include balancing module" do
-    #   assert_kind_of OrderedList::ActiveRecord::Balancing, list_model.list
-    # end
+    it "should include balancing module" do
+      assert_kind_of OrderedList::ActiveRecord::Balancing, list_model.list
+    end
   end
 
   describe "ordered" do
