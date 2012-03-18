@@ -39,7 +39,9 @@ module OrderedList
       mask = 128 >> bitindex
       value = bytestr[byteindex].ord
 
-      # Set or unset last bit with some classic bit twiddling.
+      # Set or unset last bit with some classic bit twiddling. Side note: Ruby
+      # is pretty neat, because it allows these kinds of operations even
+      # though they don't really make sense with arbitrary length integers.
       if digit == 1
         value |= mask
       else
