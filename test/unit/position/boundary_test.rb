@@ -2,12 +2,16 @@ require File.expand_path("../../../test_helper", __FILE__)
 
 describe "position boundary" do
   it "should respond to each" do
-    assert Position.new.respond_to?(:each)
+    assert Position::MAX.respond_to?(:each)
   end
 
   describe "to s" do
-    it "should return partial encoded string" do
-      assert_equal "1111...", Position::MAX.to_s
+    it "should return partial string for min" do
+      assert_equal "0000...", Position::MIN.to_s
+    end
+
+    it "should return partial string for max" do
+      assert_equal "ffff...", Position::MAX.to_s
     end
   end
 

@@ -3,13 +3,13 @@ require File.expand_path("../../../test_helper", __FILE__)
 describe "reorderable" do
   describe "constructor" do
     it "should store string representation in position attribute" do
-      assert_equal "101101", list_model.new(position: pos("101101")).read_attribute(:position)
+      assert_equal "\x7a\xf3", list_model.new(position: hexpos("7af3")).read_attribute(:position)
     end
   end
 
   describe "position" do
     it "should return position object" do
-      assert_equal pos("101101"), list_model.new(position: "101101").position
+      assert_equal hexpos("7af3"), list_model.new(position: hexpos("7af3")).position
     end
 
     it "should return nil for missing position" do

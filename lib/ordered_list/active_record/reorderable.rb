@@ -15,7 +15,7 @@ module OrderedList
       # expressed as a number without knowing the total number of records in
       # the list.
       def position
-        pos = read_attribute(position_column) and Position.parse(pos)
+        pos = read_attribute(position_column) and Position.new(pos)
       end
 
       # Returns a relation that represents all items in the list this record
@@ -54,7 +54,7 @@ module OrderedList
       # a path in a binary tree. It may not be equal to any other position in
       # the same list scope.
       def position=(pos)
-        write_attribute(position_column, pos.to_s)
+        write_attribute(position_column, pos.to_bin)
       end
     end
   end

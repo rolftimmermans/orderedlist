@@ -7,29 +7,29 @@ describe "reorderable" do
 
   describe "position" do
     it "should return stored position" do
-      item = Item.create(position: "101101")
-      assert_equal Position.parse("101101"), item.reload.position
+      item = Item.create(position: binpos("101101"))
+      assert_equal binpos("101101"), item.reload.position
     end
   end
 
   describe "whith ordered scope" do
     it "should sort by position" do
-      item2 = Item.create(position: "101101")
-      item3 = Item.create(position: "11101")
-      item1 = Item.create(position: "00111")
+      item2 = Item.create(position: binpos("101101"))
+      item3 = Item.create(position: binpos("11101"))
+      item1 = Item.create(position: binpos("00111"))
       assert_equal [item1, item2, item3], Item.ordered
     end
   end
 
   describe "creating first item" do
     it "should insert item at root" do
-      assert_equal Position.parse("1"), Item.create.position
+      assert_equal binpos("1"), Item.create.position
     end
   end
 
   describe "creating new item" do
     it "should insert item after last one" do
-      item1 = Item.create(position: "11001")
+      item1 = Item.create(position: binpos("11001"))
       item2 = Item.create
       assert_equal [item1, item2], Item.ordered.to_a
     end
@@ -42,7 +42,7 @@ describe "reorderable" do
     end
 
     it "should add item after last one" do
-      item1 = Item.create(position: "1")
+      item1 = Item.create(position: binpos("1"))
       item2 = Item.new
       item2.append
       assert_equal [item1, item2], Item.ordered.to_a
@@ -57,7 +57,7 @@ describe "reorderable" do
 
     it "should move existing item to last one" do
       item1 = Item.create
-      item2 = Item.create(position: "001")
+      item2 = Item.create(position: binpos("001"))
       item2.append
       assert_equal item2, Item.ordered.last
     end
@@ -70,7 +70,7 @@ describe "reorderable" do
     end
 
     it "should add item after last one" do
-      item1 = Item.create(position: "1")
+      item1 = Item.create(position: binpos("1"))
       item2 = Item.new
       item2.prepend
       assert_equal [item2, item1], Item.ordered.to_a
@@ -85,7 +85,7 @@ describe "reorderable" do
 
     it "should move existing item to last one" do
       item1 = Item.create
-      item2 = Item.create(position: "001")
+      item2 = Item.create(position: binpos("001"))
       item2.prepend
       assert_equal item2, Item.reversed.last
     end

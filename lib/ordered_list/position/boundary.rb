@@ -3,6 +3,9 @@ module OrderedList
     # Boundary positions are the minimum or maximum positions in any list.
     # They are represented by an infinite bit array that represents a path
     # at the extreme ends of an infinite binary tree.
+
+    # TODO: Do we need a different algorithm at the sides of the tree to
+    # create a new path? In that case we can remove this class.
     class Boundary
       include Enumerable
       include Intermediable
@@ -22,7 +25,7 @@ module OrderedList
       end
 
       def to_s
-        @bit.to_s * 4 + "..."
+        (@bit == 1 ? "f" : "0") * 4 + "..."
       end
     end
 

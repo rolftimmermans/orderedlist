@@ -27,8 +27,12 @@ class MiniTest::Unit::TestCase
     end
   end
 
-  def pos(s)
-    Position.parse(s)
+  def binpos(bits)
+    Position.new([bits].pack("B*"))
+  end
+
+  def hexpos(hex)
+    Position.new([hex].pack("H*"))
   end
 
   def sql(arel)

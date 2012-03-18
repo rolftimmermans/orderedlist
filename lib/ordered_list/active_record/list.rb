@@ -3,12 +3,12 @@ module OrderedList
     module List
       # Returns all records before the given position, record or id.
       def before(record_or_position)
-        where(table[klass.position_column].lt(position_of(record_or_position).to_s))
+        where(table[klass.position_column].lt(position_of(record_or_position).to_bin))
       end
 
       # Returns all records after the given position, record or id.
       def after(record_or_position)
-        where(table[klass.position_column].gt(position_of(record_or_position).to_s))
+        where(table[klass.position_column].gt(position_of(record_or_position).to_bin))
       end
 
       # Returns the position of the given record or id.
@@ -65,7 +65,7 @@ module OrderedList
       def retrieve_position
         scope = select(table[klass.position_column]).limit(1)
         result = connection.select_all(scope.arel, "SQL", scope.bind_values).first
-        Position.parse(type_cast_attribute(result.keys.first, result)) if result
+        Position.new(type_cast_attribute(result.keys.first, result)) if result
       end
 
       # Returns first position of all records in the current scope.
